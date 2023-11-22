@@ -22,18 +22,18 @@ public class Main {
         List<Usuario> usuarios = new ArrayList<>();
         Curso cursoJava = new Curso("Programação Java", "Aberto", 40);
 
-        // Criando alguns exemplos de usuários com senhas
+        // exemplo
         Aluno aluno1 = new Aluno("Joao", "aluno1", "joao@email.com", null);
         aluno1.setSenha("senhaAluno1");
 
         Professor professor1 = new Professor("ProfSilva", "professor1", "silva@email.com", null);
         professor1.setSenha("senhaProfessor1");
 
-        // Adicionando usuários à lista
+
         usuarios.add(aluno1);
         usuarios.add(professor1);
 
-        // Realizando o login
+    
         realizarLogin(usuarios, cursoJava);
     }
 
@@ -78,14 +78,16 @@ public class Main {
             System.out.println("3. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine();  // Limpar o buffer do scanner
+            scanner.nextLine(); 
 
             switch (opcao) {
                 case 1:
                     aluno.matricularEmDisciplina("Matemática");
                     aluno.matricularEmDisciplina("História");
                     aluno.matricularEmDisciplina("Programação");
-                    System.out.println("Disciplinas matriculadas com sucesso!");
+                    System.out.println("Matemática");
+                    System.out.println("História");
+                    System.out.println("Programação");
                     break;
                 case 2:
                     aluno.verDisciplinasMatriculadas();
