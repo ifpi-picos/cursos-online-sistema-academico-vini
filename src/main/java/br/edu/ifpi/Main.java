@@ -8,6 +8,7 @@ import br.edu.ifpi.entidades.Disciplina;
 import br.edu.ifpi.entidades.Nota;
 import br.edu.ifpi.entidades.Professor;
 import br.edu.ifpi.enums.StatusCurso;
+import br.edu.ifpi.entidades.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,106 +16,146 @@ import java.util.Scanner;
 
 public class Main {
 
+     private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        List<Aluno> alunos = new ArrayList<>();
-        List<Professor> professores = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
+        Curso cursoJava = new Curso("Programação Java", "Aberto", 40);
 
-        
-        Curso curso = new Curso("Programação Java", StatusCurso.ABERTO, 40);
+        // Criando alguns exemplos de usuários com senhas
+        Aluno aluno1 = new Aluno("Joao", "aluno1", "joao@email.com", null);
+        aluno1.setSenha("senhaAluno1");
 
+        Professor professor1 = new Professor("ProfSilva", "professor1", "silva@email.com", null);
+        professor1.setSenha("senhaProfessor1");
+
+        // Adicionando usuários à lista
+        usuarios.add(aluno1);
+        usuarios.add(professor1);
+
+        // Realizando o login
+        realizarLogin(usuarios, cursoJava);
+    }
+
+    private static void realizarLogin(List<Usuario> usuarios, Curso curso) {
+        System.out.print("Digite o nome de usuário: ");
+        String nomeUsuario = scanner.nextLine();
+        System.out.print("Digite a senha: ");
+        String senha = scanner.nextLine();
+
+        // Verifica se o usuário existe e valida a senha
+        Usuario usuario = buscarUsuario(usuarios, nomeUsuario, senha);
+        if (usuario != null) {
+            if (usuario instanceof Aluno) {
+                menuAluno((Aluno) usuario, curso);
+            } else if (usuario instanceof Professor) {
+                menuProfessor((Professor) usuario, curso);
+            } else {
+                System.out.println("Tipo de usuário desconhecido.");
+            }
+        } else {
+            System.out.println("Credenciais inválidas. Tente novamente.");
+            realizarLogin(usuarios, curso);
+        }
+    }
+
+    private static Usuario buscarUsuario(List<Usuario> usuarios, String nomeUsuario, String senha) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNome().equals(nomeUsuario) && usuario.validarSenha(senha)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
+
+    private static void menuAluno(Aluno aluno, Curso curso) {
         int opcao;
 
         do {
-            System.out.println("===== Menu =====");
-            System.out.println("1. Visualizar informações do curso");
-            System.out.println("2. Cadastrar/Matricular aluno no curso");
-            System.out.println("3. Cadastrar professor");
-            System.out.println("4. Visualizar informações do aluno");
-            System.out.println("5. Sair");
+            System.out.println("===== Menu Aluno =====");
+            System.out.println("1. Ver Disciplinas Matriculadas");
+            System.out.println("2. Ver Notas");
+            System.out.println("3. Sair");
             System.out.print("Escolha uma opção: ");
-
             opcao = scanner.nextInt();
-            scanner.nextLine();  
-
-            System.out.println();
+            scanner.nextLine();  // Limpar o buffer do scanner
 
             switch (opcao) {
                 case 1:
-                    visualizarInformacoesCurso(curso);
+                    aluno.matricularEmDisciplina("Matemática");
+                    aluno.matricularEmDisciplina("História");
+                    aluno.matricularEmDisciplina("Programação");
+                    System.out.println("Disciplinas matriculadas com sucesso!");
                     break;
-
                 case 2:
-                    cadastrarMatricularAluno(scanner, curso, alunos);
+                    aluno.verDisciplinasMatriculadas();
+                    aluno.verNotas();
                     break;
-
                 case 3:
-                    cadastrarProfessor(scanner, professores);
-                    break;
-
-                case 4:
-                    visualizarInformacoesAluno(alunos);
-                    break;
-
-                case 5:
                     System.out.println("Saindo do sistema. Até logo!");
                     break;
-
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
 
-            System.out.println(); 
+            System.out.println(); // Adiciona uma linha em branco para melhorar a leitura
 
-        } while (opcao != 5);
+        } while (opcao != 3);
     }
 
-    private static void visualizarInformacoesCurso(Curso curso) {
-        System.out.println("===== Informações do Curso =====");
-        System.out.println("Nome: " + curso.getNome());
-        System.out.println("Status: " + curso.getStatus().getDescricao());
-        System.out.println("Carga Horária: " + curso.getCargaHoraria());
+    private static void menuProfessor(Professor professor, Curso curso) {
+        int opcao;
+
+        do {
+            System.out.println("===== Menu Professor =====");
+            System.out.println("1. Associar Disciplina");
+            System.out.println("2. Dar Nota");
+            System.out.println("3. Sair");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt();
+            scanner.nextLine();  // Limpar o buffer do scanner
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("Digite o nome da disciplina: ");
+                    String disciplina = scanner.nextLine();
+                    professor.associarDisciplina(disciplina);
+                    System.out.println("Disciplina associada com sucesso!");
+                    break;
+                case 2:
+                    System.out.print("Digite o ID do aluno: ");
+                    String idAluno = scanner.nextLine();
+                    System.out.print("Digite a disciplina: ");
+                    disciplina = scanner.nextLine();
+                    System.out.print("Digite a nota: ");
+                    int nota = scanner.nextInt();
+                    scanner.nextLine();  // Limpar o buffer do scanner
+
+                    Aluno aluno = procurarAluno(curso, idAluno);
+                    if (aluno != null) {
+                        professor.darNota(aluno, disciplina, nota);
+                    } else {
+                        System.out.println("Aluno não encontrado.");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Saindo do sistema. Até logo!");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+
+            System.out.println(); // Adiciona uma linha em branco para melhorar a leitura
+
+        } while (opcao != 3);
     }
 
-    private static void cadastrarMatricularAluno(Scanner scanner, Curso curso, List<Aluno> alunos) {
-        System.out.print("Digite o nome do aluno: ");
-        String nome = scanner.nextLine();
-        System.out.print("Digite o ID do aluno: ");
-        String id = scanner.nextLine();
-        System.out.print("Digite o email do aluno: ");
-        String email = scanner.nextLine();
-
-        Aluno novoAluno = new Aluno(nome, id, email);
-        alunos.add(novoAluno);
-        curso.matricularAluno(novoAluno);
-
-        System.out.println("Aluno cadastrado e matriculado no curso com sucesso!");
-    }
-
-    private static void cadastrarProfessor(Scanner scanner, List<Professor> professores) {
-        System.out.print("Digite o nome do professor: ");
-        String nome = scanner.nextLine();
-        System.out.print("Digite o ID do professor: ");
-        String id = scanner.nextLine();
-        System.out.print("Digite o email do professor: ");
-        String email = scanner.nextLine();
-
-        Professor novoProfessor = new Professor(nome, id, email);
-        professores.add(novoProfessor);
-
-        System.out.println("Professor cadastrado com sucesso!");
-    }
-
-    private static void visualizarInformacoesAluno(List<Aluno> alunos) {
-        
-        if (alunos.isEmpty()) {
-            System.out.println("Nenhum aluno cadastrado.");
-        } else {
-            System.out.println("===== Informações do Aluno =====");
-            System.out.println("Nome: " + alunos.get(0).getNome());
-            System.out.println("ID: " + alunos.get(0).getId());
-            System.out.println("Email: " + alunos.get(0).getEmail());
-            System.out.println("Cursos matriculados: " + alunos.get(0).getCursosMatriculados());
+    private static Aluno procurarAluno(Curso curso, String idAluno) {
+        for (Aluno aluno : curso.getAlunoMatriculado()) {
+            if (aluno.getId().equals(idAluno)) {
+                return aluno;
+            }
         }
+        return null;
     }
 }
