@@ -1,54 +1,50 @@
 package br.edu.ifpi.entidades;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Aluno {
-    private String nome;
-    private String id;
-    private String email;
-    private List<Curso> cursosMatriculados;
+public class Aluno extends Usuario {
+    private Map<String, Integer> notas;
+    private Map<String, Boolean> disciplinasMatriculadas;
 
-    public Aluno(String nome, String id, String email) {
-        this.nome = nome;
-        this.id = id;
-        this.email = email;
-        this.cursosMatriculados = new ArrayList<>();
+    public Aluno(String nome, String id, String email, String senha) {
+        super(nome, id, email, "aluno", senha);
+        this.notas = new HashMap<>();
+        this.disciplinasMatriculadas = new HashMap<>();
     }
 
-    public String getNome() {
-        return nome;
+    public void matricularEmDisciplina(String disciplina) {
+        disciplinasMatriculadas.put(disciplina, true);
+        notas.put(disciplina, 0); // Inicializa a nota como 0
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void cancelarMatriculaEmDisciplina(String disciplina) {
+        disciplinasMatriculadas.remove(disciplina);
+        notas.remove(disciplina);
     }
 
-    public String getId() {
-        return id;
+    public void verDisciplinasMatriculadas() {
+        System.out.println("Disciplinas matriculadas pelo aluno " + getNome() + ": " + disciplinasMatriculadas.keySet());
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void verNotas() {
+        System.out.println("Notas do aluno " + getNome() + ":");
+        for (Map.Entry<String, Integer> entry : notas.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
     }
 
-    public String getEmail() {
-        return email;
+    public void receberNota(String disciplina, int nota) {
+        if (disciplinasMatriculadas.containsKey(disciplina)) {
+            notas.put(disciplina, nota);
+            System.out.println("Nota recebida com sucesso!");
+        } else {
+            System.out.println("Aluno não está matriculado na disciplina " + disciplina);
+        }
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Curso> getCursosMatriculados() {
-        return cursosMatriculados;
-    }
-
-    public void matricularEmCurso(Curso curso) {
-        cursosMatriculados.add(curso);
-    }
-
-    public void cancelarMatricula(Curso curso) {
-        cursosMatriculados.remove(curso);
+    public Object getId() {
+        return null;
     }
 }
