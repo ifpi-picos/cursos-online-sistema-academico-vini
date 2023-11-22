@@ -4,14 +4,13 @@ public class Usuario {
     private String nome;
     private String senha;
     private String tipo;
-// tipo trás a ideia de ser adm, professor ou aluno 
+    //tipo tras a ideia de aluno, professor ou adm.
 
     public Usuario(String nome, String senha, String tipo) {
         this.nome = nome;
         this.senha = senha;
         this.tipo = tipo;
     }
-
 
     public String getNome() {
         return nome;
@@ -37,4 +36,7 @@ public class Usuario {
         this.tipo = tipo;
     }
 
+    public boolean validarSenha(String senha) {
+        return this.senha.equals(senha);
+    }
 }
