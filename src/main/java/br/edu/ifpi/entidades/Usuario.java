@@ -6,10 +6,13 @@ public class Usuario {
     private String tipo;
     //tipo tras a ideia de aluno, professor ou adm.
 
-    public Usuario(String nome, String senha, String tipo) {
+    public Usuario(String nome, String senha, String tipo, String string, String senha2) {
         this.nome = nome;
         this.senha = senha;
         this.tipo = tipo;
+    }
+
+    public Usuario(String nome2, String id, String email, String string) {
     }
 
     public String getNome() {
