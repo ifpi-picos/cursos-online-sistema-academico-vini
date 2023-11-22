@@ -11,7 +11,7 @@ public class Autenticacao {
     }
 
     public void cadastrarUsuario(String nome, String senha, String tipo) {
-        usuarios.put(nome, new Usuario(nome, senha, tipo));
+        usuarios.put(nome, new Usuario(nome, senha, tipo, tipo));
     }
 
     public boolean autenticarUsuario(String nome, String senha) {
