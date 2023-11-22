@@ -8,13 +8,16 @@ public class Curso {
     private String nome;
     private StatusCurso status;
     private int cargaHoraria;
-    private List<Aluno> alunosMatriculados;
+    private ArrayList alunosMatriculados;
 
-    public Curso(String nome, StatusCurso status, int cargaHoraria) {
+    public Curso(String nome, StatusCurso string, int cargaHoraria) {
         this.nome = nome;
-        this.status = status;
+        this.status = string;
         this.cargaHoraria = cargaHoraria;
         this.alunosMatriculados = new ArrayList<>();
+    }
+
+    public Curso(String nome2, String string, int cargaHoraria2) {
     }
 
     public String getNome() {
@@ -41,11 +44,15 @@ public class Curso {
         this.cargaHoraria = cargaHoraria;
     }
 
-    public List<Aluno> getAlunosMatriculados() {
+    public ArrayList<Object> getAlunosMatriculados() {
         return alunosMatriculados;
     }
 
     public void matricularAluno(Aluno aluno) {
         alunosMatriculados.add(aluno);
+    }
+
+    public Aluno[] getAlunoMatriculado() {
+        return null;
     }
 }
