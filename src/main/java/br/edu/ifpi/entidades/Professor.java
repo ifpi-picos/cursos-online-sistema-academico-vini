@@ -21,4 +21,8 @@ public class Professor extends Usuario {
             System.out.println("Professor não ministra a disciplina " + disciplina);
         }
     }
+
+    public String getEmail() {
+        return null;
+    }
 }

@@ -2,7 +2,6 @@
 package br.edu.ifpi.entidades;
 import br.edu.ifpi.enums.StatusCurso;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Curso {
     private String nome;

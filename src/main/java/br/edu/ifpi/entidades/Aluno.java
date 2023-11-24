@@ -1,7 +1,6 @@
 package br.edu.ifpi.entidades;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Aluno extends Usuario {
@@ -46,5 +45,8 @@ public class Aluno extends Usuario {
 
     public Object getId() {
         return null;
+    }
+
+    public void verNotasNoBancoDeDados() {
     }
 }
