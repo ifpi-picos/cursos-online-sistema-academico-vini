@@ -4,6 +4,7 @@ import br.edu.ifpi.entidades.Curso;
 import br.edu.ifpi.entidades.Professor;
 import br.edu.ifpi.entidades.Usuario;
 import br.edu.ifpi.dao.Conexao;
+import br.edu.ifpi.entidades.Disciplina;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class Main {
         Curso cursoJava = new Curso("Programação Java", "Aberto", 40);
 
         // Exemplo de usuários
-        Aluno aluno1 = new Aluno("vinicius", "aluno1", "vini@email.com", null);
+        Aluno aluno1 = new Aluno("vinicius", "aluno1", "vinicius@email.com", null);
         aluno1.setSenha("senhaAluno1");
 
         Professor professor1 = new Professor("ProfSilva", "professor1", "silva@email.com", null);
@@ -148,5 +149,5 @@ public class Main {
         } while (opcao != 3);
     }
 
-    
+    //lutando para fazer o banco de dados funcionar
 }
