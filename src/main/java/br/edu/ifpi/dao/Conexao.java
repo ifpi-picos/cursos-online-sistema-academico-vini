@@ -8,8 +8,8 @@ public class Conexao {
 
   public static Connection getConexao() {
     try {
-      Connection conexao = DriverManager.getConnection("jdbc:postgresql://localhost:5432/jdbc_aula",
-          "postgres", "12345");
+      Connection conexao = DriverManager.getConnection("jdbc:postgresql://db.dmikwibujoxmtsqzamol.supabase.co:5432/postgresql",
+          "postgres", "vinibol123@");
       return conexao;
     } catch (SQLException e) {
       e.printStackTrace();
