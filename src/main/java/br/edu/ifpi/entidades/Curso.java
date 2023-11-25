@@ -47,8 +47,8 @@ public class Curso {
         return alunosMatriculados;
     }
 
-    public void matricularAluno(Aluno aluno) {
-        alunosMatriculados.add(aluno);
+    public void matricularAluno(Aluno aluno, ArrayList arrayList) {
+        arrayList.add(aluno);
     }
 
     public Aluno[] getAlunoMatriculado() {
