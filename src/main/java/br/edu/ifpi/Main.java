@@ -1,10 +1,13 @@
 package br.edu.ifpi;
+
 import br.edu.ifpi.entidades.Aluno;
 import br.edu.ifpi.entidades.Curso;
 import br.edu.ifpi.entidades.Professor;
 import br.edu.ifpi.entidades.Usuario;
+import br.edu.ifpi.dao.BuscarUsuario;
 import br.edu.ifpi.dao.Conexao;
-import br.edu.ifpi.entidades.Disciplina;
+import br.edu.ifpi.dao.ProcurarAluno;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,31 +20,22 @@ public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
 
+
     public static void main(String[] args) {
-        List<Usuario> usuarios = new ArrayList<>();
         Curso cursoJava = new Curso("Programação Java", "Aberto", 40);
 
-        // Exemplo de usuários
-        Aluno aluno1 = new Aluno("vinicius", "aluno1", "vinicius@email.com", null);
-        aluno1.setSenha("senhaAluno1");
-
-        Professor professor1 = new Professor("ProfSilva", "professor1", "silva@email.com", null);
-        professor1.setSenha("senhaProfessor1");
-
-        usuarios.add(aluno1);
-        usuarios.add(professor1);
-
-        realizarLogin(cursoJava, usuarios);
+        realizarLogin(cursoJava);
     }
 
-    private static void realizarLogin(Curso curso, List<Usuario> usuarios) {
+    private static void realizarLogin(Curso curso) {
         System.out.print("Digite o nome de usuário: ");
         String nomeUsuario = scanner.nextLine();
         System.out.print("Digite a senha: ");
         String senha = scanner.nextLine();
 
         
-        Usuario usuario = buscarUsuario(nomeUsuario, senha);
+        Usuario usuario = BuscarUsuario.buscarUsuarioPorCredenciais(nomeUsuario, senha);
+
         if (usuario != null) {
             if (usuario instanceof Aluno) {
                 menuAluno((Aluno) usuario, curso);
@@ -52,28 +46,8 @@ public class Main {
             }
         } else {
             System.out.println("Credenciais inválidas. Tente novamente.");
-            realizarLogin(curso, usuarios);
+            realizarLogin(curso);
         }
-    }
-
-    private static Usuario buscarUsuario(String nomeUsuario, String senha) {
-        String sql = "SELECT * FROM usuarios WHERE nome = ? AND senha = ?";
-        try (Connection connection = Conexao.getConexao();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, nomeUsuario);
-            statement.setString(2, senha);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    
-                    return new Usuario(resultSet.getString("nome"), resultSet.getString("email"), sql, sql);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private static void menuAluno(Aluno aluno, Curso curso) {
@@ -90,12 +64,10 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    
-                    System.out.println("Implemente a lógica para exibir as disciplinas matriculadas do banco de dados");
+                    aluno.verDisciplinasMatriculadasNoBancoDeDados();
                     break;
                 case 2:
-                    
-                    System.out.println("Implemente a lógica para exibir as notas do banco de dados");
+                    aluno.verNotasNoBancoDeDados();
                     break;
                 case 3:
                     System.out.println("Saindo do sistema. Até logo!");
@@ -104,7 +76,7 @@ public class Main {
                     System.out.println("Opção inválida. Tente novamente.");
             }
 
-            System.out.println(); 
+            System.out.println();
 
         } while (opcao != 3);
     }
@@ -119,23 +91,29 @@ public class Main {
             System.out.println("3. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine();  
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
                     System.out.print("Digite o nome da disciplina: ");
-                    scanner.nextLine();
-                    
-                    System.out.println("Implemente a lógica para associar disciplina no banco de dados");
+                    String disciplina = scanner.nextLine();
+                    professor.associarDisciplinaNoBancoDeDados(disciplina);
+                    System.out.println("Disciplina associada com sucesso!");
                     break;
                 case 2:
                     System.out.print("Digite o ID do aluno: ");
+                    String idAluno = scanner.nextLine();
                     System.out.print("Digite a disciplina: ");
-                    scanner.nextLine();
+                    disciplina = scanner.nextLine();
                     System.out.print("Digite a nota: ");
-                    scanner.nextLine();  
-                    
-                    System.out.println("Implemente a lógica para dar nota no banco de dados");
+                    int nota = scanner.nextInt();
+                    scanner.nextLine();
+                    Aluno aluno = ProcurarAluno.procurarAluno(curso, idAluno);
+                    if (aluno != null) {
+                        professor.darNotaNoBancoDeDados(aluno, disciplina, nota);
+                    } else {
+                        System.out.println("Aluno não encontrado.");
+                    }
                     break;
                 case 3:
                     System.out.println("Saindo do sistema. Até logo!");
@@ -144,10 +122,8 @@ public class Main {
                     System.out.println("Opção inválida. Tente novamente.");
             }
 
-            System.out.println(); 
+            System.out.println();
 
         } while (opcao != 3);
     }
-
-    //lutando para fazer o banco de dados funcionar
 }
