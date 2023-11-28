@@ -1,20 +1,24 @@
-
 package br.edu.ifpi.entidades;
+
 import br.edu.ifpi.enums.StatusCurso;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Curso {
     private String nome;
     private StatusCurso status;
     private int cargaHoraria;
-    private ArrayList alunosMatriculados;
+    private List<Aluno> alunosMatriculados;
 
-    public Curso(String nome, StatusCurso string, int cargaHoraria) {
+    public Curso(String nome, StatusCurso status, int cargaHoraria) {
         this.nome = nome;
-        this.status = string;
+        this.status = status;
         this.cargaHoraria = cargaHoraria;
         this.alunosMatriculados = new ArrayList<>();
     }
+
+   
 
     public Curso(String nome2, String string, int cargaHoraria2) {
     }
@@ -43,15 +47,15 @@ public class Curso {
         this.cargaHoraria = cargaHoraria;
     }
 
-    public ArrayList<Object> getAlunosMatriculados() {
+    public List<Aluno> getAlunosMatriculados() {
         return alunosMatriculados;
     }
 
-    public void matricularAluno(Aluno aluno, ArrayList arrayList) {
-        arrayList.add(aluno);
+    public void matricularAluno(Aluno aluno) {
+        alunosMatriculados.add(aluno);
     }
 
-    public Aluno[] getAlunoMatriculado() {
-        return null;
+    public Aluno[] getAlunosMatriculadosArray() {
+        return alunosMatriculados.toArray(new Aluno[0]);
     }
 }

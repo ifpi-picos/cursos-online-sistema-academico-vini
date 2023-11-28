@@ -1,25 +1,25 @@
 package br.edu.ifpi.entidades;
 
 public class Nota {
-    private Aluno aluno;
-    private Disciplina disciplina;
-    private double valor;
+    private String idAluno;
+    private String nomeDisciplina;
+    private int valor;
 
-    public Nota(Aluno aluno, Disciplina disciplina, double valor) {
-        this.aluno = aluno;
-        this.disciplina = disciplina;
+    public Nota(String idAluno, String nomeDisciplina, int valor) {
+        this.idAluno = idAluno;
+        this.nomeDisciplina = nomeDisciplina;
         this.valor = valor;
     }
 
-    public Aluno getAluno() {
-        return aluno;
+    public String getIdAluno() {
+        return idAluno;
     }
 
-    public Disciplina getDisciplina() {
-        return disciplina;
+    public String getNomeDisciplina() {
+        return nomeDisciplina;
     }
 
-    public double getValor() {
+    public int getValor() {
         return valor;
     }
 }

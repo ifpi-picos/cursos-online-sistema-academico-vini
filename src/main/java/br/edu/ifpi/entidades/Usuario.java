@@ -42,4 +42,12 @@ public class Usuario {
     public boolean validarSenha(String senha) {
         return this.senha.equals(senha);
     }
+
+    public String getId() {
+        return null;
+    }
+
+    public String getEmail() {
+        return null;
+    }
 }
